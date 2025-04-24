@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        p {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Select a Car</h2>
+
+<select id="carDropdown" onchange="showMessage()">
+    <option value="">--Choose a car--</option>
+    <option value="BMW">BMW</option>
+    <option value="Tesla">Tesla</option>
+    <option value="Honda">Honda</option>
+    <option value="Toyota">Toyota</option>
+</select>
+
+<p id="message"></p>
+
+<script>
+    function showMessage() {
+        let car = document.getElementById("carDropdown").value;
+        let messagePara = document.getElementById("message");
+
+        if (car) {
+            messagePara.innerText = "Congratulations for your " + car;
+        } else {
+            messagePara.innerText = "";
+        }
+    }
+</script>
+
+</body>
+</html>
