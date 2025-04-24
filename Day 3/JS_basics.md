@@ -1,12 +1,4 @@
-Sure! Here's a teleprompter-style script for **"Introduction to JavaScript"**—perfect for video, classroom, or online sessions. It's friendly, clear, and designed to be read naturally.
-
----
-
-**[Teleprompter Text: Introduction to JavaScript]**
-
-Hi everyone, and welcome!
-
-Today, we’re diving into the **Introduction to JavaScript**—one of the most essential languages in web development.
+ **Introduction to JavaScript**—one of the most essential languages in web development.
 
 Whether you're just getting started with coding, or you've played around with HTML and CSS, JavaScript is what brings your web pages to life. It's what makes a website interactive—think sliders, forms that react, or even games and animations. Yep, that’s all JavaScript!
 
