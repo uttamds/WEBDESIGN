@@ -1,4 +1,30 @@
+Sure! Here's a teleprompter-style script for **"Introduction to JavaScript"**—perfect for video, classroom, or online sessions. It's friendly, clear, and designed to be read naturally.
 
+---
+
+**[Teleprompter Text: Introduction to JavaScript]**
+
+Hi everyone, and welcome!
+
+Today, we’re diving into the **Introduction to JavaScript**—one of the most essential languages in web development.
+
+Whether you're just getting started with coding, or you've played around with HTML and CSS, JavaScript is what brings your web pages to life. It's what makes a website interactive—think sliders, forms that react, or even games and animations. Yep, that’s all JavaScript!
+
+Now, a quick bit of history—JavaScript was created in just 10 days back in 1995, and it's grown into one of the most widely-used languages in the world. It runs directly in your browser, which means there's no need for any extra software to start learning and experimenting.
+
+In this session, we’ll cover the basics:  
+- What JavaScript is  
+- How to write your first script  
+- Variables, data types, and functions  
+- And how JavaScript fits into the bigger picture of web development  
+
+By the end, you'll have a solid foundation to start building interactive web pages on your own.
+
+So, grab your code editor, open up your browser, and let’s get started with JavaScript!
+
+---
+
+Let me know if you’d like to tailor it for a younger audience, a more advanced group, or include your brand (like Crux Training Solutions).
 
 ### 📘 **1. What is JavaScript?**
 
