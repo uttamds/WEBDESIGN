@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Repeat Name</title>
+</head>
+<body>
+
+  <h2>Repeat Name Program</h2>
+
+  <label>Enter Name:</label>
+  <input type="text" id="nameInput"><br><br>
+
+  <label>Enter Frequency:</label>
+  <input type="number" id="freqInput"><br><br>
+
+  <button onclick="repeatName()">Show Name</button>
+
+  <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+
+  <script>
+    function repeatName() {
+      const name = document.getElementById("nameInput").value;
+      const freq = parseInt(document.getElementById("freqInput").value);
+      const resultDiv = document.getElementById("result");
+
+      let output = "";
+      for (let i = 0; i < freq; i++) {
+        output += name + "<br>";
+      }
+
+      resultDiv.innerHTML = output;
+    }
+  </script>
+
+</body>
+</html>
