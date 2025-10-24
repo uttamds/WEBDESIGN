@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Save Name & Phone — Demo</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin: 24px;
+      line-height: 1.4;
+      color: #111;
+    }
+    h1 { margin-bottom: 8px; }
+    form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    input[type="text"], input[type="tel"] {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      min-width: 200px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 9px 14px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #0b6efd;
+      color: white;
+      font-weight: 600;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 760px;
+      margin-top: 12px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    th { background: #fafafa; }
+    .small { font-size: 0.9rem; color: #666; }
+    .actions button {
+      background: #dc3545;
+      padding: 6px 8px;
+      font-size: 0.85rem;
+    }
+    .msg { margin-top: 8px; color: #b00; }
+  </style>
+</head>
+<body>
+  <h1>Save Name & Phone</h1>
+  <p class="small">Enter name and phone, then click <strong>Submit</strong>. Entries are added to the table and saved in your browser.</p>
+
+  <form id="contactForm" autocomplete="off">
+    <label for="name" class="small" style="display:none">Name</label>
+    <input id="name" name="name" type="text" placeholder="Ravi Kumar" required />
+    <label for="phone" class="small" style="display:none">Phone</label>
+    <input id="phone" name="phone" type="tel" placeholder="9876543210" required inputmode="numeric" />
+    <button id="submitBtn" type="submit">Submit</button>
+    <button id="clearAll" type="button" style="background:#6c757d;">Clear All</button>
+  </form>
+
+  <div id="message" class="msg" aria-live="polite"></div>
+
+  <table id="contactsTable" aria-label="Saved contacts">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Added On</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- rows go here -->
+    </tbody>
+  </table>
+
+  <script>
+    (function () {
+      const FORM_KEY = 'savedContacts_v1';
+      const form = document.getElementById('contactForm');
+      const nameInput = document.getElementById('name');
+      const phoneInput = document.getElementById('phone');
+      const tableBody = document.querySelector('#contactsTable tbody');
+      const message = document.getElementById('message');
+      const clearAllBtn = document.getElementById('clearAll');
+
+      // Utility: load from localStorage (or empty array)
+      function loadContacts() {
+        try {
+          const raw = localStorage.getItem(FORM_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          console.error('Failed to load contacts:', e);
+          return [];
+        }
+      }
+
+      // Utility: save to localStorage
+      function saveContacts(list) {
+        try {
+          localStorage.setItem(FORM_KEY, JSON.stringify(list));
+        } catch (e) {
+          console.error('Failed to save contacts:', e);
+        }
+      }
+
+      // Format date to readable string
+      function formatDate(ts) {
+        const d = new Date(ts);
+        return d.toLocaleString();
+      }
+
+      // Render table rows from contacts array
+      function renderTable() {
+        const contacts = loadContacts();
+        tableBody.innerHTML = '';
+        if (!contacts.length) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = '<td colspan="5" class="small">No entries yet.</td>';
+          tableBody.appendChild(tr);
+          return;
+        }
+
+        contacts.forEach((c, idx) => {
+          const tr = document.createElement('tr');
+
+          tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${escapeHtml(c.name)}</td>
+            <td>${escapeHtml(c.phone)}</td>
+            <td class="small">${formatDate(c.addedAt)}</td>
+            <td class="actions"><button data-index="${idx}" type="button">Delete</button></td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+
+      // Simple HTML escape to avoid injection (good practice)
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+      }
+
+      // Validate phone: Indian 10 digits or general numeric 7-15 digits
+      function validatePhone(phone) {
+        const digits = phone.replace(/\D/g, '');
+        // Prefer 10-digit Indian mobile, otherwise accept 7-15 digits
+        if (digits.length === 10) return digits;
+        if (digits.length >= 7 && digits.length <= 15) return digits;
+        return null;
+      }
+
+      // Add contact to storage and re-render
+      function addContact(name, phone) {
+        const contacts = loadContacts();
+        contacts.push({
+          name: name.trim(),
+          phone: phone.trim(),
+          addedAt: Date.now()
+        });
+        saveContacts(contacts);
+        renderTable();
+      }
+
+      // Delete contact by index
+      function deleteContact(index) {
+        const contacts = loadContacts();
+        if (index < 0 || index >= contacts.length) return;
+        contacts.splice(index, 1);
+        saveContacts(contacts);
+        renderTable();
+      }
+
+      // Clear all
+      function clearAll() {
+        if (!confirm('Clear all saved contacts?')) return;
+        localStorage.removeItem(FORM_KEY);
+        renderTable();
+      }
+
+      // On form submit
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        message.textContent = '';
+        const name = nameInput.value || '';
+        const phone = phoneInput.value || '';
+
+        if (!name.trim()) {
+          message.textContent = 'Please enter a name.';
+          nameInput.focus();
+          return;
+        }
+
+        const normalizedPhone = validatePhone(phone);
+        if (!normalizedPhone) {
+          message.textContent = 'Please enter a valid phone number (10 digits preferred).';
+          phoneInput.focus();
+          return;
+        }
+
+        // Optionally prevent duplicate phone numbers
+        const contacts = loadContacts();
+        const duplicate = contacts.some(c => c.phone.replace(/\D/g, '') === normalizedPhone);
+        if (duplicate) {
+          message.textContent = 'This phone number is already added.';
+          phoneInput.focus();
+          return;
+        }
+
+        addContact(name, normalizedPhone);
+
+        // Clear inputs and focus name
+        form.reset();
+        nameInput.focus();
+        message.textContent = 'Saved!';
+        setTimeout(() => message.textContent = '', 1400);
+      });
+
+      // Handle delete buttons using event delegation
+      tableBody.addEventListener('click', function (ev) {
+        if (ev.target.matches('button[data-index]')) {
+          const idx = Number(ev.target.getAttribute('data-index'));
+          deleteContact(idx);
+        }
+      });
+
+      clearAllBtn.addEventListener('click', clearAll);
+
+      // Initial render on page load
+      renderTable();
+    })();
+  </script>
+</body>
+</html>
