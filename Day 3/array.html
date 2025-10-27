@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Students</title>
+</head>
+<body>
+  <h2>Student Details</h2>
+
+  <button onclick="showStudents()">Show Students</button>
+
+  <ul id="studentList"></ul>
+
+  <script>
+    // Array of student objects
+    let students = [
+      { name: "Amit", roll: 101 },
+      { name: "Sneha", roll: 102 },
+      { name: "Rahul", roll: 103 },
+      { name: "Priya", roll: 104 }
+    ];
+
+    function showStudents() {
+      let list = document.getElementById("studentList");
+      list.innerHTML = "";  // clear previous list
+
+      // Loop through array and display details
+      for (let i = 0; i < students.length; i++) {
+        let item = document.createElement("li");
+        item.textContent = "Name: " + students[i].name + ", Roll No: " + students[i].roll;
+        list.appendChild(item);
+      }
+    }
+  </script>
+</body>
+</html>
