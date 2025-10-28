@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Form Validation Demo</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .login-container {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 320px;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .radio-group {
+    margin: 10px 0;
+  }
+  .error {
+    color: red;
+    font-size: 0.9em;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+
+<body>
+<div class="login-container">
+  <h2>Login Page</h2>
+  <form id="loginForm" onsubmit="return validateForm()">
+    <label>Username:</label><br>
+    <input type="text" id="username" placeholder="Enter username">
+    <div id="userError" class="error"></div>
+
+    <label>Password:</label><br>
+    <input type="password" id="password" placeholder="Enter password">
+    <div id="passError" class="error"></div>
+
+    <div class="radio-group">
+      <label>Select Role:</label><br>
+      <input type="radio" name="role" value="Student"> Student
+      <input type="radio" name="role" value="Teacher"> Teacher
+      <div id="roleError" class="error"></div>
+    </div>
+
+    <div>
+      <input type="checkbox" id="rememberMe"> Remember Me
+    </div><br>
+
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<script>
+function validateForm() {
+  // Clear previous errors
+  document.getElementById("userError").innerText = "";
+  document.getElementById("passError").innerText = "";
+  document.getElementById("roleError").innerText = "";
+
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value.trim();
+  let roleSelected = document.querySelector('input[name="role"]:checked');
+  let valid = true;
+
+  // Username validation
+  if (username === "") {
+    document.getElementById("userError").innerText = "Username is required!";
+    valid = false;
+  } else if (username.length < 3) {
+    document.getElementById("userError").innerText = "Username must be at least 3 characters.";
+    valid = false;
+  }
+
+  // Password validation
+  if (password === "") {
+    document.getElementById("passError").innerText = "Password is required!";
+    valid = false;
+  } else if (password.length < 5) {
+    document.getElementById("passError").innerText = "Password must be at least 5 characters.";
+    valid = false;
+  }
+
+  // Radio button validation
+  if (!roleSelected) {
+    document.getElementById("roleError").innerText = "Please select a role.";
+    valid = false;
+  }
+
+  if (valid) {
+    alert("Login successful! (Demo)");
+  }
+  return valid;
+}
+</script>
+</body>
+</html>
