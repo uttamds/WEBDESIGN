@@ -1,0 +1,83 @@
+import React, { useState } from "react";
+
+export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Thank you, ${formData.name}! Your message has been received.`);
+    setFormData({ name: "", email: "", message: "" });
+  };
+
+  return (
+    <div style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
+      <h1 style={{ color: "#0066cc" }}>Contact Us</h1>
+      <p>Please fill out the form below to get in touch with us.</p>
+
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          maxWidth: "400px",
+          marginTop: "20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "15px",
+        }}
+      >
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          style={{ padding: "10px", fontSize: "16px" }}
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          style={{ padding: "10px", fontSize: "16px" }}
+        />
+
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          rows="4"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          style={{ padding: "10px", fontSize: "16px" }}
+        ></textarea>
+
+        <button
+          type="submit"
+          style={{
+            backgroundColor: "#0066cc",
+            color: "#fff",
+            padding: "10px",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          Send Message
+        </button>
+      </form>
+    </div>
+  );
+}
